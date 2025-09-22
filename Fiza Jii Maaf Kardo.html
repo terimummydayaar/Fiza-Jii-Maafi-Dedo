@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Interactive Apology</title>
+<!-- Google Font: Sour Gummy -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Sour Gummy', cursive;
+    background-color: #FBEOD2;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Mini red hearts animation */
+  .heart {
+    position: absolute;
+    font-size: 12px;
+    color: red;
+    animation: float 5s linear infinite;
+  }
+  @keyframes float {
+    0% {transform: translateY(100vh) scale(1); opacity:1;}
+    100% {transform: translateY(-50px) scale(0.5); opacity:0;}
+  }
+
+  .container {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    animation: fadeIn 1s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  img, lottie-player {
+    width: 150px;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    color: #ff4b5c;
+  }
+
+  p {
+    color: #444;
+  }
+
+  button {
+    margin: 10px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    background: #ff4b5c;
+    color: white;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  button:hover {
+    transform: scale(1.1);
+  }
+
+  input[type="text"] {
+    width: 90%;
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid #ccc;
+    margin-top: 15px;
+    font-size: 1em;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: scale(0.9);}
+    to {opacity: 1; transform: scale(1);}
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="game">
+  <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdWZtcHh0MDY5cDZqc25kaGE2enlsNnFpaG1nODV0ZTFqMW02OHowMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/iBJ8NxKbqYImjdzgf7/giphy.gif" alt="sticker">
+  <h2>Aapke iss kambakht ashique ki aapki mahefil-e-mohabbat me maafi ki ek darkhawast 👉🏻👈🏻🥺</h2>
+  <button onclick="nextStep('yes1')">Jao maaf kiya tumhe 🤭</button>
+  <button onclick="nextStep('no1')">Maafi nahi milne wali hai chale jao yaha se 😠</button>
+</div>
+
+<script>
+let history = []; // History stack for back button
+
+// Floating hearts
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (Math.random() * 12 + 8) + "px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(), 5000);
+}
+setInterval(createHeart, 300);
+
+// Go back function
+function goBack() {
+  if(history.length > 0){
+    const previous = history.pop();
+    document.getElementById("game").innerHTML = previous;
+  }
+}
+
+// Game flow logic
+function nextStep(choice) {
+  const game = document.getElementById("game");
+  history.push(game.innerHTML); // Save current step for back button
+
+  switch(choice) {
+    case "yes1":
+      game.innerHTML = `
+        <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExczkzZ3p1M3AycHJydWRldDF5MWE2YzhqcXVidGUwbWo0cml6Z3c2ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tu54GM19sqJOw/giphy.gif" alt="sticker">
+        <h2>Ye kaisi narazgi thi, phook marne se bhi pehle hi udd gayi 🤧</h2>
+        <button onclick="nextStep('yes2a')">Meri shakal dekh ke narazgi ki ulti ho gayi 🤮</button>
+        <button onclick="nextStep('no2a')">Naraz ho per dikhana nahi hai mujhe 🙂</button>
+        <button onclick="goBack()">⬅ Back</button>
+      `;
+      break;
+
+    case "no1":
+      game.innerHTML = `
+        <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZjc4c25xcno0b3E1ang4YzE2ODBudjIzaGx1cTI1d2x4dzRwbXB6aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/613UspT0VfG8UHog5h/giphy.gif" alt="sticker">
+        <h2>Ja jake kaha jana hai humne meri jaan, aap ke dil ke hi toh hai hum mehman 👉👈🥹</h2>
+        <button onclick="nextStep('yes2c')">Ho gaya shuru chipku sala 😒</button>
+        <button onclick="nextStep('no2d')">Jaata hai ke maar khake jayega 😡</button>
+        <button onclick="goBack()">⬅ Back</button>
+      `;
+      break;
+
+    case "yes2a":
+      game.innerHTML = `
+        <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXZtZ21mbWd0cDV5amEyMDRqenJoZ2ZxZXJwODRtYWNrdjVnbGRhZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8E004F9H0R93NXZKhD/giphy.gif" alt="sticker">
+        <h2>Aapki ye narazgi ki ulti ko hum chaat jayege, aap hume daantna hum aapki daant khayege 🤭🎀</h2>
+        <button onclick="nextStep('step4')">Chalo ab thoda pyaar dikha dijiye 🥺</button>
+        <button onclick="goBack()">⬅ Back</button>
+      `;
+      break;
+
+    case "no2a":
+      game.innerHTML = `
+        <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZHdnejVzdXdybnZxMmJyeDE3cjRuYzFmam5iZmFhZGE5andqbTRkYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/QbzGwVf7oTgcISpcRM/giphy.gif" alt="sticker">
+        <h2>Pyaar toh itna sara dikha diya hai ab narazgi dikhane me kaisi sharam (Kahi aapne Boobies ka naam Narazgi toh nahi rakh diya na ?🥹)</h2>
+        <button onclick="nextStep('yes3c')">Hadd me rehle bete warna zaban guddi se kheench logi ☺️</button>
+        <button onclick="nextStep('step4')">Ja tu bhi kya yaad rakhega narazgi ke badle mai tujhe pyaar dikhati ho aaj 💅🏻</button>
+        <button onclick="goBack()">⬅ Back</button>
+      `;
+      break;
+
+    case "yes2c":
+      game.innerHTML = `
+        <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcnJrbGhmNjl5c3Z4YjJsb2NldWgwODY0ZXI0OGhlYWQ2bTh6MXl3ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kD2e66KhuAjRRMggnR/giphy.gif" alt="sticker">
+        <h2>Kya karo aapka dil hai hi chumbak sa aur mera badan lohe sa khud hi aapko chipak jata hai 😋</h2>
+        <button onclick="nextStep('yes2e')">Ye tharkulla sala nahi sudharne wala 😭</button>
+        <button onclick="nextStep('no2f')">Zyada chipkana bete toh ye lohe se badan me lohe ka sariya ghusa dogi peeche ke raaste se 🥰</button>
+        <button onclick="goBack()">⬅ Back</button>
+      `;
+      break;
+
+    case "no2d":
+      game.innerHTML = `
+        <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExZHFieXM0ZWpqd2RhbHgzMjl3b2IzZHBnc2VjbHA3MmZ0eHJjNTR5biZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Osl6yEWH2XPVmlec4R/giphy.gif" alt="sticker">
+        <h2>Maarna hai toh maar do per mai jaoga toh aapka pyaar hi khake 🥹👉👈</h2>
+        <button onclick="nextStep('yes2g')">Abey jaa jake guu kha le 🤢</button>
+        <button onclick="nextStep('step4')">Chal jaa maaf kiya tujhe ab zyada drama na matt kar 🙄</button>
+        <button onclick="goBack()">⬅ Back</button>
+      `;
+      break;
+
+    case "yes2e":
+    case "no2f":
+    case "yes2g":
+    case "step4":
+      game.innerHTML = `
+        <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmc1bDZ3NnNhbXhoaGd6Y2x3cmwzNDFneGppNTY0aDY4OXA1MWc0cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/DPkmxreCZxr7QD9Bq8/giphy.gif" alt="sticker">
+        <h2>Ab yaha tak aa hi gaye ho toh dil ke jazbaat likh daalo madam jii (Chaho toh galiya bhi likh sakte ho bura nahi lagega 😋)</h2>
+        <input type="text" id="heartfelt" maxlength="100" placeholder="Type your message here..."/>
+        <br/>
+        <button onclick="sendWhatsApp()">Send to WhatsApp 💌</button>
+        <button onclick="goBack()">⬅ Back</button>
+      `;
+      break;
+  }
+}
+
+// WhatsApp redirect
+function sendWhatsApp() {
+  const text = document.getElementById("heartfelt").value;
+  if(text.trim() === "") {
+    alert("Oye masakkali kaha chali chodhke apne Aftab ki gali 梁");
+    return;
+  }
+  const encoded = encodeURIComponent(text);
+  const number = "918308385616"; // Replace with your WhatsApp number including country code
+  const url = `https://wa.me/${number}?text=${encoded}`;
+  window.open(url, "_blank");
+}
+
+</script>
+</body>
+</html>
